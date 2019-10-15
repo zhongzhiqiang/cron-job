@@ -1,9 +1,9 @@
 package work
 
 import (
-	"fmt"
-	"github.com/zhongzhiqiang/cron/common/constant"
-	"github.com/zhongzhiqiang/cron/common/protocol"
+	"github.com/zhongzhiqiang/cron-job/common"
+	"github.com/zhongzhiqiang/cron-job/common/constant"
+	"github.com/zhongzhiqiang/cron-job/common/protocol"
 	"time"
 )
 
@@ -48,9 +48,7 @@ func (schedule *Schedule) TryStartJob(plan *protocol.JobSchedulePlan) {
 	}
 	jobExecuteInfo = protocol.BuildJobExecuteInfo(plan)
 	schedule.jobExecutingTable[plan.Job.JobName] = jobExecuteInfo
-	fmt.Println("执行任务", jobExecuteInfo.Job.JobName, plan.NextTime)
-	delete(schedule.jobExecutingTable, plan.Job.JobName)
-	fmt.Println("任务结束", plan.Job.JobName)
+	G_Executor.ExecuteJob(jobExecuteInfo)
 }
 
 func (schedule *Schedule) TrySchedule() (scheduleAfter time.Duration) {
@@ -99,7 +97,7 @@ func (schedule *Schedule) scheduleLoop() {
 		case jobEvent = <-schedule.jobEventChan:
 			schedule.handleJobEvent(jobEvent)
 		case <-scheduleTimer.C:
-		case jobResult = <- schedule.jobResultChan:
+		case jobResult = <-schedule.jobResultChan:
 			schedule.HandleResult(jobResult)
 		}
 		scheduleAfter = schedule.TrySchedule()
@@ -109,7 +107,24 @@ func (schedule *Schedule) scheduleLoop() {
 }
 
 func (schedule *Schedule) HandleResult(jobResult *protocol.JobExecuteResultInfo) {
-
+	delete(schedule.jobExecutingTable, jobResult.ExecuteInfo.Job.JobName)
+	// 生成日志
+	if jobResult.Err != common.ERR_LOCK_ALREADY_REQUIRED {
+		var (
+			jobLog *protocol.JobLog
+		)
+		jobLog = &protocol.JobLog{
+			JobName:      jobResult.ExecuteInfo.Job.JobName,
+			Command:      jobResult.ExecuteInfo.Job.Command,
+			Err:          jobResult.Err.Error(),
+			Output:       string(jobResult.OutPut),
+			PlanTime:     jobResult.ExecuteInfo.PlanTime.UnixNano(),
+			ScheduleTime: jobResult.ExecuteInfo.RealTime.UnixNano(),
+			StartTime:    jobResult.StartTime.UnixNano(),
+			EndTime:      jobResult.EndTime.UnixNano(),
+		}
+		G_LogSink.Append(jobLog)
+	}
 }
 
 func (schedule *Schedule) PushResult(jobResult *protocol.JobExecuteResultInfo) {

@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/zhongzhiqiang/cron/common/constant"
-	"github.com/zhongzhiqiang/cron/common/protocol"
+	"github.com/zhongzhiqiang/cron-job/common/constant"
+	"github.com/zhongzhiqiang/cron-job/common/protocol"
 	"go.etcd.io/etcd/clientv3"
 	"go.etcd.io/etcd/mvcc/mvccpb"
 	"time"
@@ -130,5 +130,3 @@ func (jobMgr *JobMgr) ListAllJob() (jobList []protocol.Job, err error) {
 	}
 	return
 }
-
-

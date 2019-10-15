@@ -3,8 +3,8 @@ package handler
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/zhongzhiqiang/cron/common/etcd"
-	"github.com/zhongzhiqiang/cron/common/protocol"
+	"github.com/zhongzhiqiang/cron-job/common/etcd"
+	"github.com/zhongzhiqiang/cron-job/common/protocol"
 )
 
 type DelJob struct {

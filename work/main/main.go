@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/zhongzhiqiang/cron/work"
+	"github.com/zhongzhiqiang/cron-job/work"
 	"time"
 )
 
@@ -18,7 +18,10 @@ func main() {
 		fmt.Println("init etcd error:", err.Error())
 		return
 	}
-
+	if err = work.InitLogSink(); err != nil {
+		fmt.Println("init log sink error:", err.Error())
+		return
+	}
 
 	for {
 		time.Sleep(1)

@@ -3,9 +3,9 @@ package work
 import (
 	"context"
 	"fmt"
-	"github.com/zhongzhiqiang/cron/common/constant"
-	"github.com/zhongzhiqiang/cron/common/etcd"
-	"github.com/zhongzhiqiang/cron/common/protocol"
+	"github.com/zhongzhiqiang/cron-job/common/constant"
+	"github.com/zhongzhiqiang/cron-job/common/etcd"
+	"github.com/zhongzhiqiang/cron-job/common/protocol"
 	"go.etcd.io/etcd/clientv3"
 	"go.etcd.io/etcd/mvcc/mvccpb"
 	"time"

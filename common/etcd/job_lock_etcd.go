@@ -2,8 +2,9 @@ package etcd
 
 import (
 	"context"
-	"github.com/zhongzhiqiang/cron/common"
-	"github.com/zhongzhiqiang/cron/common/constant"
+	"github.com/zhongzhiqiang/cron-job/common"
+	"github.com/zhongzhiqiang/cron-job/common/constant"
+
 	"go.etcd.io/etcd/clientv3"
 )
 

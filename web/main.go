@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/zhongzhiqiang/cron/common/etcd"
-	"github.com/zhongzhiqiang/cron/web/handler"
+	"github.com/zhongzhiqiang/cron-job/common/etcd"
+	"github.com/zhongzhiqiang/cron-job/web/handler"
 )
 
 func main() {

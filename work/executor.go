@@ -1,8 +1,8 @@
 package work
 
 import (
-	"github.com/zhongzhiqiang/cron/common/etcd"
-	"github.com/zhongzhiqiang/cron/common/protocol"
+	"github.com/zhongzhiqiang/cron-job/common/etcd"
+	"github.com/zhongzhiqiang/cron-job/common/protocol"
 	"math/rand"
 	"os/exec"
 	"time"
@@ -44,7 +44,7 @@ func (executor *Executor) ExecuteJob(info *protocol.JobExecuteInfo) {
 			result.EndTime = time.Now()
 			result.OutPut = output
 		}
-
+		G_Schedule.PushResult(result)
 	}()
 }
 
